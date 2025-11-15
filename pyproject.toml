@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arabic-nlp-toolkit"
+version = "1.0.0"
+description = "أداة بسيطة وفعالة لمعالجة النصوص العربية"
+authors = [{name = "Nidal Watfa", email = "nidal@example.com"}]
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+keywords = ["arabic", "nlp", "text processing", "arabic nlp"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Text Processing"
+]
+
+[project.urls]
+Homepage = "https://github.com/nidalwatfa/arabic-nlp-toolkit"
+Repository = "https://github.com/nidalwatfa/arabic-nlp-toolkit"
+
+[tool.setuptools.packages.find]
+where = ["src"]
