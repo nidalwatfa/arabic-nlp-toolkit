@@ -1,0 +1,18 @@
+arabic-nlp-toolkit/
+│
+├── arabic_nlp_toolkit.py      # ملف المكتبة الأساسي
+├── example.py                 # ملف التجارب
+├── setup.py                   # ملف الإعداد للتثبيت
+├── requirements.txt           # ملف المتطلبات
+├── README.md                  # ملف التوثيق
+│
+├── arabic_nlp_toolkit/        # مجلد الحزمة (للتوسعة لاحقًا)
+│   ├── __init__.py            # يجعل المجلد حزمة قابلة للاستيراد
+│   ├── preprocessing.py       # يمكن وضع دوال التطبيع وإزالة الوقف
+│   ├── tokenization.py        # يمكن وضع دوال التجزئة
+│   ├── stemming.py            # يمكن وضع دوال التجذير
+│   └── analysis.py            # يمكن وضع دوال التحليل
+│
+└── tests/                     # مجلد الاختبارات
+    ├── __init__.py
+    └── test_basic.py          # اختبارات أولية للتأكد من عمل الدوال
