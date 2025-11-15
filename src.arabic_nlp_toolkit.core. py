@@ -1,0 +1,57 @@
+import re
+from typing import List
+
+# قائمة stop words (قابلة للتوسيع)
+STOPWORDS = {
+    "في", "من", "على", "إلى", "عن", "و", "أن", "لا", "ما", "هذا", "ذلك",
+    "كان", "ليس", "يكون", "أو", "إذا", "حتى", "بعد", "قبل", "ثم", "لكن",
+    "هو", "هي", "هم", "هن", "أنت", "أنا", "نحن", "أنتم", "أنتن"
+}
+
+def normalize(text: str) -> str:
+    """تطبيع النص العربي: إزالة التشكيل، توحيد الهمزات، إزالة التكرار والرموز"""
+    if not text:
+        return ""
+    # إزالة التشكيل
+    text = re.sub(r'[\u0617-\u061A\u064B-\u65F]', '', text)
+    # توحيد الهمزات
+    text = text.replace("أ", "ا").replace("إ", "ا").replace("آ", "ا").replace("ة", "ه")
+    # إزالة التكرار (أكثر من حرفين متتاليين)
+    text = re.sub(r'(.)\1{2,}', r'\1\1', text)
+    # إزالة الأرقام والرموز غير العربية
+    text = re.sub(r'[\d\W_]+', ' ', text)
+    # تنظيف المسافات
+    return re.sub(r'\s+', ' ', text).strip()
+
+def tokenize(text: str) -> List[str]:
+    """تقسيم النص إلى كلمات"""
+    return [word for word in text.split() if word]
+
+def remove_stopwords(tokens: List[str]) -> List[str]:
+    """إزالة كلمات الوقف"""
+    return [word for word in tokens if word not in STOPWORDS]
+
+def stem(word: str) -> str:
+    """تجذير بسيط وقابل للتحسين"""
+    if len(word) < 3:
+        return word
+    
+    # إزالة ال التعريف
+    if word.startswith("ال"):
+        word = word[2:]
+    
+    # البادئات
+    prefixes = ["و", "ف", "ب", "ك", "ل", "س", "ت"]
+    for p in prefixes:
+        if word.startswith(p) and len(word) > 3:
+            word = word[1:]
+            break
+    
+    # اللواحق
+    suffixes = ["ها", "هم", "كم", "نا", "نی", "ون", "ين", "وا", "تم", "تن"]
+    for s in suffixes:
+        if word.endswith(s) and len(word) > 3:
+            word = word[:-len(s)]
+            break
+    
+    return word
