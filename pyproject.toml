@@ -1,27 +1,45 @@
+
 [build-system]
-requires = ["setuptools>=45", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "arabic-nlp-toolkit"
-version = "1.0.0"
-description = "أداة بسيطة وفعالة لمعالجة النصوص العربية"
-authors = [{name = "Nidal Watfa", email = "nidal@example.com"}]
+version = "0.1.0"
+description = "Toolkit for Arabic Natural Language Processing: normalization, stopwords removal, tokenization, stemming, and basic text analysis."
 readme = "README.md"
-requires-python = ">=3.7"
-license = {text = "MIT"}
-keywords = ["arabic", "nlp", "text processing", "arabic nlp"]
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+  { name = "Nidal Watfa", email = "your.email@example.com" }
+]
+keywords = ["arabic", "nlp", "natural language processing", "text", "tokenization", "stemming"]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Intended Audience :: Developers",
-    "Topic :: Text Processing"
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Text Processing :: Linguistic",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Operating System :: OS Independent"
+]
+
+dependencies = [
+  "nltk>=3.8",
+  "regex>=2024.4.16"
 ]
 
 [project.urls]
 Homepage = "https://github.com/nidalwatfa/arabic-nlp-toolkit"
-Repository = "https://github.com/nidalwatfa/arabic-nlp-toolkit"
+Issues = "https://github.com/nidalwatfa/arabic-nlp-toolkit/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["arabic_nlp_toolkit*"]
