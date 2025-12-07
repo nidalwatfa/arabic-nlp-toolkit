@@ -1,3 +1,24 @@
 .tests
 .examples
 .data-L
+init_.py_"""
+Arabic NLP Toolkit
+مكتبة معالجة اللغة الطبيعية العربية
+"""
+
+__version__ = "0.1.0"
+__author__ = "Your Name"
+
+from .normalizer import ArabicNormalizer
+from .tokenizer import ArabicTokenizer
+from .stemmer import ArabicStemmer
+from .stopwords import StopwordsRemover
+from .analyzer import ArabicTextAnalyzer
+
+__all__ = [
+    'ArabicNormalizer',
+    'ArabicTokenizer',
+    'ArabicStemmer',
+    'StopwordsRemover',
+    'ArabicTextAnalyzer'
+]
