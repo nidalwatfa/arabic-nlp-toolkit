@@ -581,3 +581,93 @@ htmlcov/
 
 # pyenv
 .python-version
+README.md# Arabic NLP Toolkit
+
+<div align="center">
+
+![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Status](https://img.shields.io/badge/status-active-success.svg)
+
+**مكتبة مفتوحة المصدر لمعالجة اللغة الطبيعية العربية**
+
+[English](#english) | [العربية](#arabic)
+
+</div>
+
+---
+
+## 📖 نظرة عامة
+
+**Arabic NLP Toolkit** هي مكتبة Python مفتوحة المصدر مصممة خصيصاً لتسهيل مهام معالجة اللغة الطبيعية (NLP) للغة العربية. توفر المكتبة أدوات جاهزة وسهلة الاستخدام للتعامل مع النصوص العربية.
+
+---
+
+## ✨ المزايا
+
+- 🔤 **تطبيع النصوص** - إزالة التشكيل، توحيد الهمزات والألفات
+- 🚫 **إزالة كلمات الوقف** - تصفية الكلمات الشائعة غير المفيدة
+- ✂️ **تجزئة النصوص** - تقسيم النصوص إلى كلمات أو جمل
+- 🌱 **التجذير** - استخراج الجذور الأساسية للكلمات
+- 📊 **التحليل النصي** - إحصائيات شاملة عن النصوص
+
+---
+
+## 📦 التثبيت
+
+### من PyPI (قريباً)
+```bash
+pip install arabic-nlp-toolkit
+من المصدر
+git clone https://github.com/yourusername/arabic-nlp-toolkit.git
+cd arabic-nlp-toolkit
+pip install -e .
+🚀 الاستخدام السريع
+1️⃣ تطبيع النص
+from arabic_nlp_toolkit import ArabicNormalizer
+
+normalizer = ArabicNormalizer()
+text = "أَهْلاً وَسَهْلاً بِكُمْ فِي عَالَمِ البَرْمَجَةِ"
+result = normalizer.normalize(text)
+print(result)
+# النتيجة: "اهلا وسهلا بكم في عالم البرمجة"
+2️⃣ إزالة كلمات الوقف
+from arabic_nlp_toolkit import StopwordsRemover
+
+remover = StopwordsRemover()
+text = "هذا كتاب مفيد جداً في علم البيانات"
+result = remover.remove_stopwords(text)
+print(result)
+# النتيجة: "كتاب مفيد جداً علم البيانات"
+3️⃣ تجزئة النص
+from arabic_nlp_toolkit import ArabicTokenizer
+
+tokenizer = ArabicTokenizer()
+text = "مرحباً بكم في عالم معالجة اللغة العربية"
+tokens = tokenizer.tokenize(text)
+print(tokens)
+# النتيجة: ['مرحباً', 'بكم', 'في', 'عالم', 'معالجة', 'اللغة', 'العربية']
+4️⃣ التجذير
+from arabic_nlp_toolkit import ArabicStemmer
+
+stemmer = ArabicStemmer()
+word = "المبرمجون"
+root = stemmer.stem(word)
+print(root)
+# النتيجة: "برمج"
+5️⃣ التحليل النصي
+from arabic_nlp_toolkit import ArabicTextAnalyzer
+
+analyzer = ArabicTextAnalyzer()
+text = "اللغة العربية لغة جميلة وغنية بالمفردات والتعابير"
+analysis = analyzer.analyze(text)
+print(analysis)
+النتيجة:
+{
+    'word_count': 7,
+    'char_count': 47,
+    'char_count_no_spaces': 41,
+    'sentence_count': 1,
+    'unique_words': 7,
+    'avg_word_length': 5.86
+}
