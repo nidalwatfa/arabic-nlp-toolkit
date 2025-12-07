@@ -470,3 +470,6 @@ class ArabicTextAnalyzer:
         sorted_frequency = dict(sorted(frequency.items(), key=lambda x: x[1], reverse=True))
         
         return sorted_frequency
+requirents.txt# لا توجد مكتبات خارجية مطلوبة
+# المكتبة تعتمد فقط على المكتبات القياسية في Python
+ملاحظة: هذا الملف فارغ تقريباً لأن المكتبة تستخدم فقط المكتبات المدمجة في Python (re, os, unicodedata)
