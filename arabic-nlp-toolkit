@@ -506,3 +506,7 @@ setup(
     },
     keywords='arabic nlp natural-language-processing tokenization stemming normalization',
 )
+MANIFEST.ininclude README.md
+include LICENSE
+include requirements.txt
+recursive-include arabic_nlp_toolkit/data *.txt
