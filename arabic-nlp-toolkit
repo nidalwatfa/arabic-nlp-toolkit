@@ -83,6 +83,99 @@ if __name__ == "__main__":
     test_char_tokenize()
     print("\n🎉 جميع الاختبارات نجحت!")
 .examples
+example.py"""
+مثال شامل لاستخدام Arabic NLP Toolkit
+"""
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from arabic_nlp_toolkit import (
+    ArabicNormalizer,
+    StopwordsRemover,
+    ArabicTokenizer,
+    ArabicStemmer,
+    ArabicTextAnalyzer
+)
+
+
+def main():
+    print("=" * 60)
+    print("مرحباً بك في Arabic NLP Toolkit")
+    print("=" * 60)
+    
+    # النص التجريبي
+    text = """
+    البرمجة هي فن وعلم في نفس الوقت.
+    المبرمجون يحلون المشاكل بطرق إبداعية ومبتكرة.
+    تعلم البرمجة يفتح آفاقاً واسعة في عالم التكنولوجيا.
+    """
+    
+    print("\n📝 النص الأصلي:")
+    print(text)
+    
+    # 1. التطبيع
+    print("\n" + "=" * 60)
+    print("1️⃣ التطبيع (Normalization)")
+    print("=" * 60)
+    normalizer = ArabicNormalizer()
+    normalized_text = normalizer.normalize(text)
+    print(normalized_text)
+    
+    # 2. إزالة كلمات الوقف
+    print("\n" + "=" * 60)
+    print("2️⃣ إزالة كلمات الوقف (Stopwords Removal)")
+    print("=" * 60)
+    remover = StopwordsRemover()
+    cleaned_text = remover.remove_stopwords(normalized_text)
+    print(cleaned_text)
+    
+    # 3. التجزئة
+    print("\n" + "=" * 60)
+    print("3️⃣ التجزئة (Tokenization)")
+    print("=" * 60)
+    tokenizer = ArabicTokenizer()
+    tokens = tokenizer.tokenize(normalized_text)
+    print(f"عدد الكلمات: {len(tokens)}")
+    print(f"الكلمات: {tokens[:10]}...")
+    
+    # 4. التجذير
+    print("\n" + "=" * 60)
+    print("4️⃣ التجذير (Stemming)")
+    print("=" * 60)
+    stemmer = ArabicStemmer()
+    sample_words = ["المبرمجون", "البرمجة", "المشاكل", "التكنولوجيا"]
+    print("أمثلة على التجذير:")
+    for word in sample_words:
+        root = stemmer.stem(word)
+        print(f"  {word} → {root}")
+    
+    # 5. التحليل
+    print("\n" + "=" * 60)
+    print("5️⃣ التحليل النصي (Text Analysis)")
+    print("=" * 60)
+    analyzer = ArabicTextAnalyzer()
+    analysis = analyzer.analyze(text)
+    print("\n📊 إحصائيات النص:")
+    for key, value in analysis.items():
+        print(f"  • {key}: {value}")
+    
+    # 6. تكرار الكلمات
+    print("\n" + "=" * 60)
+    print("6️⃣ أكثر الكلمات تكراراً")
+    print("=" * 60)
+    top_words = analyzer.get_top_words(cleaned_text, 5)
+    for word, count in top_words.items():
+        print(f"  • {word}: {count}")
+    
+    print("\n" + "=" * 60)
+    print("✅ انتهى المثال بنجاح!")
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    main()
 .data-L
 stopwords.txtفي
 من
