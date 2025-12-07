@@ -671,3 +671,101 @@ print(analysis)
     'unique_words': 7,
     'avg_word_length': 5.86
 }
+## 📚 أمثلة متقدمة
+
+### معالجة نص كامل
+```python
+from arabic_nlp_toolkit import (
+    ArabicNormalizer,
+    StopwordsRemover,
+    ArabicTokenizer,
+    ArabicTextAnalyzer
+)
+
+# النص الأصلي
+text = """
+البرمجة هي فن وعلم في نفس الوقت. 
+تتطلب البرمجة الإبداع والمنطق والصبر.
+المبرمجون يحلون المشاكل بطرق مبتكرة.
+"""
+
+# التطبيع
+normalizer = ArabicNormalizer()
+normalized = normalizer.normalize(text)
+
+# إزالة كلمات الوقف
+remover = StopwordsRemover()
+cleaned = remover.remove_stopwords(normalized)
+
+# التجزئة
+tokenizer = ArabicTokenizer()
+tokens = tokenizer.tokenize(cleaned)
+
+# التحليل
+analyzer = ArabicTextAnalyzer()
+analysis = analyzer.analyze(text)
+frequency = analyzer.word_frequency(cleaned)
+
+print("الكلمات الأكثر تكراراً:", analyzer.get_top_words(cleaned, 5))
+تحليل تكرار الكلمات
+from arabic_nlp_toolkit import ArabicTextAnalyzer
+
+analyzer = ArabicTextAnalyzer()
+text = "Python لغة برمجة قوية. Python سهلة التعلم. Python مستخدمة على نطاق واسع."
+
+frequency = analyzer.word_frequency(text)
+print(frequency)
+# النتيجة: {'python': 3, 'لغة': 1, 'برمجة': 1, ...}
+📁 هيكل المشروع
+arabic-nlp-toolkit/
+├── arabic_nlp_toolkit/
+│   ├── __init__.py
+│   ├── normalizer.py
+│   ├── stopwords.py
+│   ├── tokenizer.py
+│   ├── stemmer.py
+│   ├── analyzer.py
+│   └── data/
+│       └── stopwords.txt
+├── tests/
+│   ├── test_normalizer.py
+│   ├── test_tokenizer.py
+│   └── test_stemmer.py
+├── examples/
+├── setup.py
+├── requirements.txt
+├── README.md
+├── LICENSE
+├── MANIFEST.in
+└── .gitignore
+🛠️ المتطلبات
+Python >= 3.7
+لا توجد مكتبات خارجية مطلوبة
+🤝 المساهمة
+نرحب بمساهماتكم! للمساهمة في المشروع:
+Fork المشروع
+أنشئ فرعاً للميزة الجديدة (git checkout -b feature/AmazingFeature)
+Commit التغييرات (git commit -m 'Add some AmazingFeature')
+Push للفرع (git push origin feature/AmazingFeature)
+افتح Pull Request
+📝 الترخيص
+هذا المشروع مرخص تحت رخصة MIT - انظر ملف LICENSE للتفاصيل.
+👨‍💻 المطور
+[NIDAL WATFA]
+GitHub: username nidalwatfa
+Email: nidalwatfa99@gmail.com
+🌟 الدعم
+إذا أعجبك المشروع، لا تنسَ إعطاءه ⭐ على GitHub!
+🔮 التحديثات المستقبلية
+[ ] دعم تحليل المشاعر
+[ ] استخراج الكيانات المسماة (NER)
+[ ] دعم اللهجات العربية
+[ ] تحسين خوارزمية التجذير
+[ ] إضافة نماذج تعلم آلي
+📞 التواصل
+لأي استفسارات أو مشاكل، يرجى فتح Issue في GitHub.
+�
+
+صُنع بـ ❤️ للمجتمع العربي
+�
+```
