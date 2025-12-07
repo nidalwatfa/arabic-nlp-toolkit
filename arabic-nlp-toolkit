@@ -1,4 +1,41 @@
-.tests
+.testsimport sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from arabic_nlp_toolkit import ArabicTokenizer
+
+
+def test_tokenize():
+    tokenizer = ArabicTokenizer()
+    text = "مرحباً بكم في عالم البرمجة"
+    result = tokenizer.tokenize(text)
+    assert len(result) == 5
+    assert "مرحباً" in result
+    print("✅ اختبار التجزئة نجح")
+
+
+def test_tokenize_sentences():
+    tokenizer = ArabicTokenizer()
+    text = "هذه جملة أولى. هذه جملة ثانية؟ وهذه الثالثة!"
+    result = tokenizer.tokenize_sentences(text)
+    assert len(result) == 3
+    print("✅ اختبار تجزئة الجمل نجح")
+
+
+def test_char_tokenize():
+    tokenizer = ArabicTokenizer()
+    text = "مرحبا"
+    result = tokenizer.char_tokenize(text)
+    assert len(result) == 5
+    assert result == ['م', 'ر', 'ح', 'б', 'ا']
+    print("✅ اختبار تجزئة الأحرف نجح")
+
+
+if __name__ == "__main__":
+    test_tokenize()
+    test_tokenize_sentences()
+    test_char_tokenize()
+    print("\n🎉 جميع الاختبارات نجحت!")
 .examples
 .data-L
 stopwords.txtفي
