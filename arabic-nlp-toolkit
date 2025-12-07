@@ -301,3 +301,77 @@ class ArabicTokenizer:
             return []
         
         return list(text.replace(' ', ''))
+stemmer.pyimport re
+
+
+class ArabicStemmer:
+    """
+    فئة للتجذير البسيط للكلمات العربية
+    """
+    
+    def __init__(self):
+        # البادئات الشائعة
+        self.prefixes = ['ال', 'و', 'ف', 'ب', 'ك', 'ل', 'لل']
+        
+        # اللواحق الشائعة
+        self.suffixes = ['ها', 'ان', 'ات', 'ون', 'ين', 'يه', 'ه', 'ة', 'ي', 'ك', 'ت', 'كم', 'كن', 'نا', 'ني', 'وا', 'ما', 'هم', 'هن', 'كما', 'هما', 'نا', 'ني']
+        
+    def stem(self, word):
+        """
+        استخراج جذر الكلمة
+        """
+        if not word or len(word) < 3:
+            return word
+        
+        stemmed_word = word
+        
+        # إزالة البادئات
+        stemmed_word = self._remove_prefix(stemmed_word)
+        
+        # إزالة اللواحق
+        stemmed_word = self._remove_suffix(stemmed_word)
+        
+        # التأكد من أن الكلمة لا تقل عن 3 أحرف
+        if len(stemmed_word) < 3:
+            return word
+        
+        return stemmed_word
+    
+    def _remove_prefix(self, word):
+        """
+        إزالة البادئات
+        """
+        for prefix in sorted(self.prefixes, key=len, reverse=True):
+            if word.startswith(prefix) and len(word) > len(prefix) + 2:
+                return word[len(prefix):]
+        return word
+    
+    def _remove_suffix(self, word):
+        """
+        إزالة اللواحق
+        """
+        for suffix in sorted(self.suffixes, key=len, reverse=True):
+            if word.endswith(suffix) and len(word) > len(suffix) + 2:
+                return word[:-len(suffix)]
+        return word
+    
+    def stem_sentence(self, sentence):
+        """
+        تجذير جملة كاملة
+        """
+        if not sentence:
+            return ""
+        
+        words = sentence.split()
+        stemmed_words = [self.stem(word) for word in words]
+        
+        return ' '.join(stemmed_words)
+    
+    def stem_list(self, words):
+        """
+        تجذير قائمة من الكلمات
+        """
+        if not words:
+            return []
+        
+        return [self.stem(word) for word in words]
