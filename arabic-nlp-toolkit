@@ -234,3 +234,70 @@ class StopwordsRemover:
         الحصول على قائمة كلمات الوقف
         """
         return self.stopwords
+tokenizer.pyimport re
+
+
+class ArabicTokenizer:
+    """
+    فئة لتجزئة النصوص العربية إلى كلمات
+    """
+    
+    def __init__(self):
+        self.punctuation_pattern = r'[،؛؟!.\'"():;?!\-\[\]{}\\/]'
+    
+    def tokenize(self, text):
+        """
+        تجزئة النص إلى كلمات
+        """
+        if not text:
+            return []
+        
+        # إزالة علامات الترقيم
+        text = re.sub(self.punctuation_pattern, ' ', text)
+        
+        # تقسيم النص إلى كلمات
+        tokens = text.split()
+        
+        # إزالة المسافات الفارغة
+        tokens = [token.strip() for token in tokens if token.strip()]
+        
+        return tokens
+    
+    def tokenize_sentences(self, text):
+        """
+        تجزئة النص إلى جمل
+        """
+        if not text:
+            return []
+        
+        # تقسيم النص بناءً على علامات الترقيم المنهية للجمل
+        sentences = re.split(r'[.!?؟!。]', text)
+        
+        # إزالة الجمل الفارغة
+        sentences = [sent.strip() for sent in sentences if sent.strip()]
+        
+        return sentences
+    
+    def word_tokenize(self, text, keep_punctuation=False):
+        """
+        تجزئة متقدمة للكلمات مع خيار الحفاظ على علامات الترقيم
+        """
+        if not text:
+            return []
+        
+        if keep_punctuation:
+            # تقسيم مع الحفاظ على علامات الترقيم
+            tokens = re.findall(r'\w+|[^\w\s]', text, re.UNICODE)
+        else:
+            tokens = self.tokenize(text)
+        
+        return tokens
+    
+    def char_tokenize(self, text):
+        """
+        تجزئة النص إلى أحرف
+        """
+        if not text:
+            return []
+        
+        return list(text.replace(' ', ''))
