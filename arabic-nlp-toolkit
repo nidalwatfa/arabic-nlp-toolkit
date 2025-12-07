@@ -984,3 +984,70 @@ if __name__ == "__main__":
     test_normalize_hamza()
     test_normalize()
     print("\n🎉 جميع الاختبارات نجحت!")
+CONTRIBUTING.md# المساهمة في Arabic NLP Toolkit
+
+شكراً لاهتمامك بالمساهمة في مشروعنا! 🎉
+
+## كيفية المساهمة
+
+### 1. Fork المشروع
+انقر على زر "Fork" في أعلى الصفحة
+
+### 2. استنساخ المشروع
+```bash
+git clone https://github.com/your-username/arabic-nlp-toolkit.git
+cd arabic-nlp-toolkit
+3. إنشاء فرع جديد
+git checkout -b feature/amazing-feature
+4. إجراء التعديلات
+اكتب كود نظيف ومفهوم
+أضف تعليقات توضيحية
+اتبع أسلوب الكود الموجود
+5. اختبار التعديلات
+python tests/test_normalizer.py
+python tests/test_tokenizer.py
+python tests/test_stemmer.py
+6. Commit التغييرات
+git add .
+git commit -m "Add: وصف مختصر للتعديل"
+7. Push للفرع
+git push origin feature/amazing-feature
+8. فتح Pull Request
+افتح Pull Request من صفحة GitHub الخاصة بك
+إرشادات الكود
+أسلوب الكتابة
+استخدم أسماء متغيرات واضحة بالإنجليزية
+أضف تعليقات بالعربية لتوضيح الوظائف
+اتبع PEP 8 لأسلوب Python
+مثال على الكود الجيد
+def normalize_text(text):
+    """
+    تطبيع النص العربي
+    
+    Args:
+        text (str): النص المراد تطبيعه
+        
+    Returns:
+        str: النص بعد التطبيع
+    """
+    if not text:
+        return ""
+    
+    # إزالة التشكيل
+    text = remove_diacritics(text)
+    
+    return text
+أنواع المساهمات المرحب بها
+🐛 إصلاح الأخطاء: تصحيح المشاكل الموجودة
+✨ ميزات جديدة: إضافة وظائف جديدة
+📝 التوثيق: تحسين الشرح والأمثلة
+🎨 تحسينات الكود: تحسين الأداء والجودة
+✅ الاختبارات: إضافة اختبارات جديدة
+الإبلاغ عن المشاكل
+إذا وجدت خطأ:
+تحقق من أن المشكلة غير مسجلة مسبقاً
+افتح Issue جديد
+وصف المشكلة بوضوح
+أضف مثالاً على الكود إن أمكن
+أسئلة؟
+لا تتردد في فتح Discussion أو التواصل معنا!
