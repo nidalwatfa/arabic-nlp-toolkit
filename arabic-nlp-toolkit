@@ -375,3 +375,98 @@ class ArabicStemmer:
             return []
         
         return [self.stem(word) for word in words]
+analyzer.pyfrom .tokenizer import ArabicTokenizer
+from .normalizer import ArabicNormalizer
+
+
+class ArabicTextAnalyzer:
+    """
+    فئة لتحليل النصوص العربية
+    """
+    
+    def __init__(self):
+        self.tokenizer = ArabicTokenizer()
+        self.normalizer = ArabicNormalizer()
+    
+    def analyze(self, text):
+        """
+        تحليل شامل للنص
+        """
+        if not text:
+            return {
+                'word_count': 0,
+                'char_count': 0,
+                'char_count_no_spaces': 0,
+                'sentence_count': 0,
+                'unique_words': 0,
+                'avg_word_length': 0
+            }
+        
+        # تطبيع النص
+        normalized_text = self.normalizer.normalize(text)
+        
+        # تجزئة النص
+        words = self.tokenizer.tokenize(normalized_text)
+        sentences = self.tokenizer.tokenize_sentences(text)
+        
+        # الإحصائيات
+        word_count = len(words)
+        char_count = len(text)
+        char_count_no_spaces = len(text.replace(' ', ''))
+        sentence_count = len(sentences)
+        unique_words = len(set(words))
+        
+        # متوسط طول الكلمة
+        avg_word_length = sum(len(word) for word in words) / word_count if word_count > 0 else 0
+        
+        return {
+            'word_count': word_count,
+            'char_count': char_count,
+            'char_count_no_spaces': char_count_no_spaces,
+            'sentence_count': sentence_count,
+            'unique_words': unique_words,
+            'avg_word_length': round(avg_word_length, 2)
+        }
+    
+    def word_frequency(self, text):
+        """
+        حساب تكرار الكلمات
+        """
+        if not text:
+            return {}
+        
+        normalized_text = self.normalizer.normalize(text)
+        words = self.tokenizer.tokenize(normalized_text)
+        
+        frequency = {}
+        for word in words:
+            frequency[word] = frequency.get(word, 0) + 1
+        
+        # ترتيب حسب التكرار
+        sorted_frequency = dict(sorted(frequency.items(), key=lambda x: x[1], reverse=True))
+        
+        return sorted_frequency
+    
+    def get_top_words(self, text, n=10):
+        """
+        الحصول على أكثر الكلمات تكراراً
+        """
+        frequency = self.word_frequency(text)
+        return dict(list(frequency.items())[:n])
+    
+    def char_frequency(self, text):
+        """
+        حساب تكرار الأحرف
+        """
+        if not text:
+            return {}
+        
+        text = text.replace(' ', '')
+        frequency = {}
+        
+        for char in text:
+            frequency[char] = frequency.get(char, 0) + 1
+        
+        sorted_frequency = dict(sorted(frequency.items(), key=lambda x: x[1], reverse=True))
+        
+        return sorted_frequency
