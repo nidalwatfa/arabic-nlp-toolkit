@@ -168,3 +168,69 @@ class ArabicNormalizer:
         """
         translator = str.maketrans('', '', self.arabic_punctuations + self.english_punctuations)
         return text.translate(translator)
+stopwords.pyimport os
+import re
+
+
+class StopwordsRemover:
+    """
+    فئة لإزالة كلمات الوقف من النصوص العربية
+    """
+    
+    def __init__(self, custom_stopwords=None):
+        """
+        custom_stopwords: قائمة اختيارية بكلمات وقف إضافية
+        """
+        self.stopwords = self._load_stopwords()
+        
+        if custom_stopwords:
+            self.stopwords.update(custom_stopwords)
+    
+    def _load_stopwords(self):
+        """
+        تحميل كلمات الوقف من الملف
+        """
+        stopwords_path = os.path.join(
+            os.path.dirname(__file__), 
+            'data', 
+            'stopwords.txt'
+        )
+        
+        stopwords = set()
+        try:
+            with open(stopwords_path, 'r', encoding='utf-8') as f:
+                stopwords = set(line.strip() for line in f if line.strip())
+        except FileNotFoundError:
+            print(f"تحذير: ملف كلمات الوقف غير موجود في {stopwords_path}")
+        
+        return stopwords
+    
+    def remove_stopwords(self, text):
+        """
+        إزالة كلمات الوقف من النص
+        """
+        if not text:
+            return ""
+        
+        words = text.split()
+        filtered_words = [word for word in words if word not in self.stopwords]
+        
+        return ' '.join(filtered_words)
+    
+    def add_stopword(self, word):
+        """
+        إضافة كلمة وقف جديدة
+        """
+        self.stopwords.add(word)
+    
+    def remove_stopword(self, word):
+        """
+        إزالة كلمة من قائمة كلمات الوقف
+        """
+        self.stopwords.discard(word)
+    
+    def get_stopwords(self):
+        """
+        الحصول على قائمة كلمات الوقف
+        """
+        return self.stopwords
