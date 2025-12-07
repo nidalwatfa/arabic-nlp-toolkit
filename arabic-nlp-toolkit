@@ -22,3 +22,86 @@ __all__ = [
     'StopwordsRemover',
     'ArabicTextAnalyzer'
 ]
+normalizer.pyimport re
+import unicodedata
+
+
+class ArabicNormalizer:
+    """
+    فئة لتطبيع النصوص العربية
+    """
+    
+    def __init__(self):
+        self.arabic_punctuations = '''`÷×؛<>_()*&^%][ـ،/:"؟.,'{}~¦+|!"…"–ـ'''
+        self.english_punctuations = '''`÷×;/<>_()‹›*&^%][+$,?'{}~¦-|!"…"–'''
+        
+    def normalize(self, text):
+        """
+        تطبيع النص العربي
+        """
+        if not text:
+            return ""
+        
+        # إزالة التشكيل
+        text = self.remove_diacritics(text)
+        
+        # توحيد الهمزات
+        text = self.normalize_hamza(text)
+        
+        # توحيد الألف
+        text = self.normalize_alef(text)
+        
+        # إزالة التطويل
+        text = self.remove_tatweel(text)
+        
+        # إزالة المسافات الزائدة
+        text = re.sub(r'\s+', ' ', text).strip()
+        
+        return text
+    
+    def remove_diacritics(self, text):
+        """
+        إزالة التشكيل من النص
+        """
+        arabic_diacritics = re.compile("""
+                                 ّ    | # Shadda
+                                 َ    | # Fatha
+                                 ً    | # Tanwin Fath
+                                 ُ    | # Damma
+                                 ٌ    | # Tanwin Damm
+                                 ِ    | # Kasra
+                                 ٍ    | # Tanwin Kasr
+                                 ْ    | # Sukun
+                                 ـ     # Tatweel
+                             """, re.VERBOSE)
+        return re.sub(arabic_diacritics, '', text)
+    
+    def normalize_hamza(self, text):
+        """
+        توحيد أشكال الهمزة
+        """
+        text = re.sub("[إأآا]", "ا", text)
+        text = re.sub("ى", "ي", text)
+        text = re.sub("ؤ", "ء", text)
+        text = re.sub("ئ", "ء", text)
+        return text
+    
+    def normalize_alef(self, text):
+        """
+        توحيد أشكال الألف
+        """
+        text = re.sub("[أإآ]", "ا", text)
+        return text
+    
+    def remove_tatweel(self, text):
+        """
+        إزالة التطويل (ـ)
+        """
+        return re.sub(r'ـ+', '', text)
+    
+    def remove_punctuations(self, text):
+        """
+        إزالة علامات الترقيم
+        """
+        translator = str.maketrans('', '', self.arabic_punctuations + self.english_punctuations)
+        return text.translate(translator)
