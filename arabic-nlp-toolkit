@@ -1,4 +1,50 @@
 .testsimport sys
+test_stemmer.pyimport sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from arabic_nlp_toolkit import ArabicStemmer
+
+
+def test_stem():
+    stemmer = ArabicStemmer()
+    word = "المبرمجون"
+    result = stemmer.stem(word)
+    assert result == "برمج"
+    print("✅ اختبار التجذير نجح")
+
+
+def test_remove_prefix():
+    stemmer = ArabicStemmer()
+    word = "والكتاب"
+    result = stemmer._remove_prefix(word)
+    assert result == "كتاب"
+    print("✅ اختبار إزالة البادئة نجح")
+
+
+def test_stem_sentence():
+    stemmer = ArabicStemmer()
+    sentence = "المبرمجون يكتبون الأكواد"
+    result = stemmer.stem_sentence(sentence)
+    assert "برمج" in result
+    print("✅ اختبار تجذير الجملة نجح")
+
+
+def test_stem_list():
+    stemmer = ArabicStemmer()
+    words = ["المبرمج", "البرمجة", "المبرمجون"]
+    result = stemmer.stem_list(words)
+    assert len(result) == 3
+    print("✅ اختبار تجذير القائمة نجح")
+
+
+if __name__ == "__main__":
+    test_stem()
+    test_remove_prefix()
+    test_stem_sentence()
+    test_stem_list()
+    print("\n🎉 جميع الاختبارات نجحت!")
+
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
