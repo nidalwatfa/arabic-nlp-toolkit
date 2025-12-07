@@ -769,3 +769,41 @@ Email: nidalwatfa99@gmail.com
 صُنع بـ ❤️ للمجتمع العربي
 �
 ```
+test_normalizer.pyimport sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from arabic_nlp_toolkit import ArabicNormalizer
+
+
+def test_remove_diacritics():
+    normalizer = ArabicNormalizer()
+    text = "مَرْحَباً بِكُمْ"
+    result = normalizer.remove_diacritics(text)
+    assert "َ" not in result
+    assert "ْ" not in result
+    assert "ً" not in result
+    print("✅ اختبار إزالة التشكيل نجح")
+
+
+def test_normalize_hamza():
+    normalizer = ArabicNormalizer()
+    text = "أإآ"
+    result = normalizer.normalize_hamza(text)
+    assert result == "ااا"
+    print("✅ اختبار توحيد الهمزات نجح")
+
+
+def test_normalize():
+    normalizer = ArabicNormalizer()
+    text = "أَهْلاً وَسَهْلاً"
+    result = normalizer.normalize(text)
+    assert result == "اهلا وسهلا"
+    print("✅ اختبار التطبيع الكامل نجح")
+
+
+if __name__ == "__main__":
+    test_remove_diacritics()
+    test_normalize_hamza()
+    test_normalize()
+    print("\n🎉 جميع الاختبارات نجحت!")
