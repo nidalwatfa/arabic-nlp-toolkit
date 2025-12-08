@@ -110,7 +110,78 @@ __all__ = [
 (الكود كما هو مرتب ومصحح)
 
 ===== file: tests/test_tokenizer.py =====
-(الكود كما هو مرتب ومصحح)
+(الكود كما هو مرتب ومصحح)logo.svg<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- خلفية دائرية متدرجة -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffd89b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#19547b;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- تأثير الظل -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/> 
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- الخلفية الرئيسية -->
+  <circle cx="100" cy="100" r="95" fill="url(#bgGradient)" filter="url(#shadow)"/>
+  
+  <!-- دائرة داخلية -->
+  <circle cx="100" cy="100" r="85" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+  
+  <!-- حرف ع العربي المنمق -->
+  <g transform="translate(100, 100)">
+    <!-- الجزء الرئيسي من حرف ع -->
+    <path d="M -25 -30 Q -35 -25, -35 -15 L -35 10 Q -35 20, -25 25 L 25 25 Q 35 20, 35 10 L 35 -5 Q 35 -15, 25 -20 L 5 -20 L 5 -10 L 20 -10 Q 25 -8, 25 -3 L 25 8 Q 25 13, 20 15 L -20 15 Q -25 13, -25 8 L -25 -12 Q -25 -18, -20 -20 L -10 -20" 
+          fill="#ffffff" 
+          stroke="#ffd89b" 
+          stroke-width="2"
+          filter="url(#shadow)"/>
+    
+    <!-- النقطة -->
+    <circle cx="0" cy="5" r="4" fill="#ffd89b"/>
+  </g>
+  
+  <!-- عناصر تقنية (شبكة عصبية مبسطة) -->
+  <g opacity="0.4">
+    <!-- عقد -->
+    <circle cx="40" cy="50" r="3" fill="#ffffff"/>
+    <circle cx="160" cy="50" r="3" fill="#ffffff"/>
+    <circle cx="40" cy="150" r="3" fill="#ffffff"/>
+    <circle cx="160" cy="150" r="3" fill="#ffffff"/>
+    
+    <!-- خطوط الاتصال -->
+    <line x1="40" y1="50" x2="100" y2="70" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+    <line x1="160" y1="50" x2="100" y2="70" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+    <line x1="40" y1="150" x2="100" y2="130" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+    <line x1="160" y1="150" x2="100" y2="130" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+  </g>
+  
+  <!-- النص السفلي -->
+  <text x="100" y="175" 
+        font-family="Arial, sans-serif" 
+        font-size="16" 
+        font-weight="bold" 
+        fill="#ffffff" 
+        text-anchor="middle">NLP</text>
+  
+  <!-- حدود دائرية خارجية -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+</svg>
 
 ===== file: tests/test_stemmer.py =====
 (الكود كما هو مرتب ومصحح)
