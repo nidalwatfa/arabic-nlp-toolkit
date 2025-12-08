@@ -1,0 +1,28 @@
+devcotainer.json{
+  "name": "Arabic NLP Development",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.formatting.provider": "black"
+      }
+    }
+  },
+  
+  "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  
+  "forwardPorts": [8000, 5000],
+  
+  "remoteUser": "vscode"
+}
