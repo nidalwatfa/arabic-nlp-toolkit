@@ -1,18 +1,71 @@
-arabic-nlp-toolkit/
-│
-├── arabic_nlp_toolkit.py      # ملف المكتبة الأساسي
-├── example.py                 # ملف التجارب
-├── setup.py                   # ملف الإعداد للتثبيت
-├── requirements.txt           # ملف المتطلبات
-├── README.md                  # ملف التوثيق
-│
-├── arabic_nlp_toolkit/        # مجلد الحزمة (للتوسعة لاحقًا)
-│   ├── __init__.py            # يجعل المجلد حزمة قابلة للاستيراد
-│   ├── preprocessing.py       # يمكن وضع دوال التطبيع وإزالة الوقف
-│   ├── tokenization.py        # يمكن وضع دوال التجزئة
-│   ├── stemming.py            # يمكن وضع دوال التجذير
-│   └── analysis.py            # يمكن وضع دوال التحليل
-│
-└── tests/                     # مجلد الاختبارات
-    ├── __init__.py
-    └── test_basic.py          # اختبارات أولية للتأكد من عمل الدوال
+# ─── هيكل المشروع: arabic-nlp-toolkit ───
+# ضع الملفات كما هو موضح بالأسفل داخل مجلد arabic-nlp-toolkit/
+
+# =========================
+# ملف: arabic_nlp_toolkit.py
+# =========================
+from arabic_nlp_toolkit.preprocessing import normalize_text, remove_stopwords
+from arabic_nlp_toolkit.tokenization import tokenize
+from arabic_nlp_toolkit.stemming import stem_word
+from arabic_nlp_toolkit.analysis import word_frequency
+
+__all__ = [
+    "normalize_text",
+    "remove_stopwords",
+    "tokenize",
+    "stem_word",
+    "word_frequency",
+]
+
+# =========================
+# ملف: example.py
+# =========================
+from arabic_nlp_toolkit import normalize_text, tokenize, stem_word, word_frequency
+
+text = "اللغة العربية لغة جميلة ومهمة في العالم العربي."
+
+print("النص الأصلي:", text)
+print("النص بعد التطبيع:", normalize_text(text))
+print("التجزئة:", tokenize(text))
+print("التجذير:", [stem_word(w) for w in tokenize(text)])
+print("تكرار الكلمات:", word_frequency(text))
+
+# =========================
+# ملف: setup.py
+# =========================
+from setuptools import setup, find_packages
+
+setup(
+    name="arabic-nlp-toolkit",
+    version="0.1.0",
+    description="أدوات بسيطة لمعالجة اللغة العربية",
+    author="Your Name",
+    packages=find_packages(),
+    install_requires=[
+        "nltk",
+        "arabic-reshaper",
+        "python-bidi"
+    ],
+    python_requires=">=3.6",
+)
+
+# =========================
+# ملف: requirements.txt
+# =========================
+"""
+nltk
+arabic-reshaper
+python-bidi
+"""
+
+# =========================
+# ملف: README.md
+# =========================
+"""
+# Arabic NLP Toolkit
+
+مكتبة بسيطة لمعالجة اللغة العربية (تطبيع، إزالة كلمات الوقف، تجزئة، تجذير، تحليل).
+
+## التثبيت
+```bash
+pip install -r requirements.txt
