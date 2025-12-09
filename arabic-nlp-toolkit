@@ -53,7 +53,16 @@ include LICENSE
 include requirements.txt
 recursive-include arabic_nlp_toolkit/data *.txt
 """
+example.py
+from arabic_nlp_toolkit import normalize_text, tokenize, stem_word, word_frequency
 
+text = "اللغة العربية لغة جميلة ومهمة في العالم العربي."
+
+print("النص الأصلي:", text)
+print("النص بعد التطبيع:", normalize_text(text))
+print("التجزئة:", tokenize(text))
+print("التجذير:", [stem_word(w) for w in tokenize(text)])
+print("تكرار الكلمات:", word_frequency(text))
 # ===== file: LICENSE =====
 """
 MIT License
