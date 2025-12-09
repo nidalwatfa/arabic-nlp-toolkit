@@ -1,4 +1,14 @@
-===== file: setup.py =====
+"""
+════════════════════════════════════════════════════════════════
+Arabic NLP Toolkit - البنية الكاملة للمشروع
+════════════════════════════════════════════════════════════════
+المطور: Nidal Watfa
+GitHub: nidalwatfa
+Email: nidalwatfa99@gmail.com
+════════════════════════════════════════════════════════════════
+"""
+
+# ===== file: setup.py =====
 from setuptools import setup, find_packages
 
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -29,39 +39,85 @@ setup(
     keywords='arabic nlp natural-language-processing tokenization stemming normalization',
 )
 
-===== file: requirements.txt =====
+# ===== file: requirements.txt =====
+"""
 # لا توجد مكتبات خارجية مطلوبة
 # المكتبة تعتمد فقط على المكتبات القياسية في Python
 # مثل: re, os, unicodedata
+"""
 
-===== file: MANIFEST.in =====
+# ===== file: MANIFEST.in =====
+"""
 include README.md
 include LICENSE
 include requirements.txt
 recursive-include arabic_nlp_toolkit/data *.txt
+"""
 
-===== file: LICENSE =====
+# ===== file: LICENSE =====
+"""
 MIT License
 
 Copyright (c) 2024 Nidal Watfa
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-...
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-===== file: README.md =====
-# Arabic NLP Toolkit
-(المحتوى كامل كما أرسلته سابقاً، مع تحديث بيانات المطور إلى:  
-المطور: Nidal Watfa  
-GitHub: nidalwatfa  
-Email: nidalwatfa99@gmail.com)
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-===== file: .gitignore =====
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+# ===== file: .gitignore =====
+"""
 __pycache__/
 *.py[cod]
-...
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.env
+.venv
+env/
+venv/
+ENV/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+"""
 
-===== file: arabic_nlp_toolkit/__init__.py =====
+# ═══════════════════════════════════════════════════════════════
+# arabic_nlp_toolkit/__init__.py
+# ═══════════════════════════════════════════════════════════════
+
 """
 Arabic NLP Toolkit
 مكتبة معالجة اللغة الطبيعية العربية
@@ -84,139 +140,680 @@ __all__ = [
     'ArabicTextAnalyzer'
 ]
 
-===== file: arabic_nlp_toolkit/normalizer.py =====
-(الكود كما هو مرتب ومصحح)
+# ═══════════════════════════════════════════════════════════════
+# arabic_nlp_toolkit/normalizer.py
+# ═══════════════════════════════════════════════════════════════
 
-===== file: arabic_nlp_toolkit/tokenizer.py =====
-(الكود كما هو مرتب ومصحح)
+import re
+import unicodedata
 
-===== file: arabic_nlp_toolkit/stemmer.py =====
-(الكود كما هو مرتب ومصحح)
+class ArabicNormalizer:
+    """
+    تطبيع النصوص العربية
+    """
+    
+    def __init__(self):
+        # أحرف الهمزة المختلفة
+        self.alef_variants = ['أ', 'إ', 'آ', 'ٱ']
+        self.alef_normalized = 'ا'
+        
+        # التشكيل
+        self.arabic_diacritics = re.compile(r'[\u0617-\u061A\u064B-\u0652]')
+        
+        # علامات الترقيم العربية
+        self.arabic_punctuations = '۔،؛؟'
+        
+    def remove_diacritics(self, text):
+        """إزالة التشكيل من النص"""
+        return self.arabic_diacritics.sub('', text)
+    
+    def normalize_alef(self, text):
+        """توحيد أشكال الألف"""
+        for variant in self.alef_variants:
+            text = text.replace(variant, self.alef_normalized)
+        return text
+    
+    def normalize_teh_marbuta(self, text):
+        """تحويل التاء المربوطة إلى هاء"""
+        return text.replace('ة', 'ه')
+    
+    def remove_tatweel(self, text):
+        """إزالة التطويل"""
+        return text.replace('ـ', '')
+    
+    def remove_non_arabic(self, text):
+        """إزالة الأحرف غير العربية"""
+        return re.sub(r'[^\u0600-\u06FF\s]', '', text)
+    
+    def normalize_spacing(self, text):
+        """توحيد المسافات"""
+        return re.sub(r'\s+', ' ', text).strip()
+    
+    def normalize(self, text, remove_diacritics=True, normalize_alef=True,
+                  normalize_teh=False, remove_tatweel=True,
+                  remove_non_arabic=False, normalize_spacing=True):
+        """
+        تطبيع النص بشكل كامل
+        
+        Args:
+            text: النص المراد تطبيعه
+            remove_diacritics: إزالة التشكيل
+            normalize_alef: توحيد الألف
+            normalize_teh: تحويل التاء المربوطة
+            remove_tatweel: إزالة التطويل
+            remove_non_arabic: إزالة الأحرف غير العربية
+            normalize_spacing: توحيد المسافات
+        
+        Returns:
+            النص المطبّع
+        """
+        if remove_diacritics:
+            text = self.remove_diacritics(text)
+        
+        if normalize_alef:
+            text = self.normalize_alef(text)
+        
+        if normalize_teh:
+            text = self.normalize_teh_marbuta(text)
+        
+        if remove_tatweel:
+            text = self.remove_tatweel(text)
+        
+        if remove_non_arabic:
+            text = self.remove_non_arabic(text)
+        
+        if normalize_spacing:
+            text = self.normalize_spacing(text)
+        
+        return text
 
-===== file: arabic_nlp_toolkit/stopwords.py =====
-(الكود كما هو مرتب ومصحح)
+# ═══════════════════════════════════════════════════════════════
+# arabic_nlp_toolkit/tokenizer.py
+# ═══════════════════════════════════════════════════════════════
 
-===== file: arabic_nlp_toolkit/analyzer.py =====
-(الكود كما هو مرتب ومصحح)
+import re
 
-===== file: arabic_nlp_toolkit/data/stopwords.txt =====
+class ArabicTokenizer:
+    """
+    تقطيع النصوص العربية إلى كلمات وجمل
+    """
+    
+    def __init__(self):
+        # نمط الجمل العربية
+        self.sentence_pattern = re.compile(r'[.!?؟۔]+')
+        
+        # نمط الكلمات
+        self.word_pattern = re.compile(r'[\u0600-\u06FF]+')
+    
+    def tokenize_sentences(self, text):
+        """
+        تقطيع النص إلى جمل
+        
+        Args:
+            text: النص المراد تقطيعه
+        
+        Returns:
+            قائمة الجمل
+        """
+        sentences = self.sentence_pattern.split(text)
+        return [s.strip() for s in sentences if s.strip()]
+    
+    def tokenize_words(self, text):
+        """
+        تقطيع النص إلى كلمات
+        
+        Args:
+            text: النص المراد تقطيعه
+        
+        Returns:
+            قائمة الكلمات
+        """
+        words = self.word_pattern.findall(text)
+        return words
+    
+    def tokenize(self, text, level='word'):
+        """
+        تقطيع النص
+        
+        Args:
+            text: النص المراد تقطيعه
+            level: مستوى التقطيع ('word' أو 'sentence')
+        
+        Returns:
+            قائمة الوحدات (كلمات أو جمل)
+        """
+        if level == 'sentence':
+            return self.tokenize_sentences(text)
+        else:
+            return self.tokenize_words(text)
+
+# ═══════════════════════════════════════════════════════════════
+# arabic_nlp_toolkit/stemmer.py
+# ═══════════════════════════════════════════════════════════════
+
+import re
+
+class ArabicStemmer:
+    """
+    استخراج جذور الكلمات العربية
+    """
+    
+    def __init__(self):
+        # السوابق الشائعة
+        self.prefixes = [
+            'ال', 'و', 'ف', 'ب', 'ك', 'ل',
+            'لل', 'وال', 'فال', 'بال', 'كال',
+            'ولل', 'فلل', 'بلل', 'كلل'
+        ]
+        
+        # اللواحق الشائعة
+        self.suffixes = [
+            'ها', 'ان', 'ات', 'ون', 'ين', 'ه', 'ة', 'ي', 'ك', 'ت', 'كم', 'كن',
+            'نا', 'ني', 'وا', 'ما', 'هم', 'هن', 'كما', 'هما', 'نی', 'وه', 'يه', 'ئ'
+        ]
+        
+        # الأحرف الضعيفة
+        self.weak_letters = ['ا', 'و', 'ي']
+    
+    def remove_prefixes(self, word):
+        """إزالة السوابق"""
+        for prefix in sorted(self.prefixes, key=len, reverse=True):
+            if word.startswith(prefix) and len(word) > len(prefix) + 2:
+                return word[len(prefix):]
+        return word
+    
+    def remove_suffixes(self, word):
+        """إزالة اللواحق"""
+        for suffix in sorted(self.suffixes, key=len, reverse=True):
+            if word.endswith(suffix) and len(word) > len(suffix) + 2:
+                return word[:-len(suffix)]
+        return word
+    
+    def stem(self, word):
+        """
+        استخراج جذر الكلمة
+        
+        Args:
+            word: الكلمة المراد استخراج جذرها
+        
+        Returns:
+            الجذر المستخرج
+        """
+        if len(word) < 3:
+            return word
+        
+        # إزالة السوابق
+        word = self.remove_prefixes(word)
+        
+        # إزالة اللواحق
+        word = self.remove_suffixes(word)
+        
+        return word
+    
+    def stem_text(self, text):
+        """
+        استخراج جذور كلمات النص
+        
+        Args:
+            text: النص المراد معالجته
+        
+        Returns:
+            النص بعد استخراج الجذور
+        """
+        words = text.split()
+        stemmed_words = [self.stem(word) for word in words]
+        return ' '.join(stemmed_words)
+
+# ═══════════════════════════════════════════════════════════════
+# arabic_nlp_toolkit/stopwords.py
+# ═══════════════════════════════════════════════════════════════
+
+import os
+
+class StopwordsRemover:
+    """
+    إزالة الكلمات الشائعة (Stop Words)
+    """
+    
+    def __init__(self, custom_stopwords=None):
+        # قائمة الكلمات الشائعة الافتراضية
+        self.default_stopwords = {
+            'في', 'من', 'إلى', 'على', 'عن', 'هذا', 'هذه', 'ذلك', 'التي',
+            'الذي', 'التى', 'هو', 'هي', 'أن', 'إن', 'كان', 'كانت', 'لم',
+            'لن', 'قد', 'كل', 'بعض', 'أي', 'أو', 'لكن', 'مع', 'عند', 'منذ',
+            'حتى', 'و', 'ف', 'ب', 'ك', 'ل', 'ما', 'لا', 'إلا', 'غير', 'بل',
+            'لكن', 'أم', 'أما', 'هل', 'نعم', 'لماذا', 'كيف', 'أين', 'متى',
+            'من', 'الى', 'على', 'هذا', 'هذه', 'ذاك', 'تلك', 'هؤلاء', 'أولئك',
+            'أنا', 'نحن', 'أنت', 'أنتم', 'أنتن', 'هما', 'هم', 'هن'
+        }
+        
+        if custom_stopwords:
+            self.stopwords = set(custom_stopwords)
+        else:
+            self.stopwords = self.default_stopwords
+            self._load_stopwords_from_file()
+    
+    def _load_stopwords_from_file(self):
+        """تحميل الكلمات الشائعة من ملف"""
+        try:
+            data_dir = os.path.join(os.path.dirname(__file__), 'data')
+            stopwords_file = os.path.join(data_dir, 'stopwords.txt')
+            
+            if os.path.exists(stopwords_file):
+                with open(stopwords_file, 'r', encoding='utf-8') as f:
+                    file_stopwords = {line.strip() for line in f if line.strip()}
+                    self.stopwords.update(file_stopwords)
+        except Exception:
+            pass
+    
+    def remove(self, words):
+        """
+        إزالة الكلمات الشائعة من قائمة كلمات
+        
+        Args:
+            words: قائمة الكلمات
+        
+        Returns:
+            قائمة الكلمات بعد إزالة الكلمات الشائعة
+        """
+        return [word for word in words if word not in self.stopwords]
+    
+    def remove_from_text(self, text):
+        """
+        إزالة الكلمات الشائعة من نص
+        
+        Args:
+            text: النص المراد معالجته
+        
+        Returns:
+            النص بعد إزالة الكلمات الشائعة
+        """
+        words = text.split()
+        filtered_words = self.remove(words)
+        return ' '.join(filtered_words)
+    
+    def add_stopwords(self, words):
+        """إضافة كلمات جديدة إلى قائمة الكلمات الشائعة"""
+        if isinstance(words, str):
+            self.stopwords.add(words)
+        else:
+            self.stopwords.update(words)
+    
+    def remove_stopwords_from_list(self, words):
+        """إزالة كلمات من قائمة الكلمات الشائعة"""
+        if isinstance(words, str):
+            self.stopwords.discard(words)
+        else:
+            self.stopwords.difference_update(words)
+
+# ═══════════════════════════════════════════════════════════════
+# arabic_nlp_toolkit/analyzer.py
+# ═══════════════════════════════════════════════════════════════
+
+from .normalizer import ArabicNormalizer
+from .tokenizer import ArabicTokenizer
+from .stemmer import ArabicStemmer
+from .stopwords import StopwordsRemover
+import re
+
+class ArabicTextAnalyzer:
+    """
+    محلل نصوص عربي شامل
+    """
+    
+    def __init__(self):
+        self.normalizer = ArabicNormalizer()
+        self.tokenizer = ArabicTokenizer()
+        self.stemmer = ArabicStemmer()
+        self.stopwords_remover = StopwordsRemover()
+    
+    def analyze(self, text, normalize=True, remove_stopwords=False, stem=False):
+        """
+        تحليل النص بشكل شامل
+        
+        Args:
+            text: النص المراد تحليله
+            normalize: تطبيع النص
+            remove_stopwords: إزالة الكلمات الشائعة
+            stem: استخراج الجذور
+        
+        Returns:
+            قاموس يحتوي على التحليل
+        """
+        original_text = text
+        
+        # التطبيع
+        if normalize:
+            text = self.normalizer.normalize(text)
+        
+        # التقطيع
+        sentences = self.tokenizer.tokenize_sentences(text)
+        words = self.tokenizer.tokenize_words(text)
+        
+        # إزالة الكلمات الشائعة
+        if remove_stopwords:
+            words = self.stopwords_remover.remove(words)
+        
+        # استخراج الجذور
+        if stem:
+            words = [self.stemmer.stem(word) for word in words]
+        
+        # الإحصائيات
+        char_count = len(text)
+        word_count = len(words)
+        sentence_count = len(sentences)
+        unique_words = len(set(words))
+        
+        # الكلمات الأكثر تكراراً
+        word_freq = {}
+        for word in words:
+            word_freq[word] = word_freq.get(word, 0) + 1
+        
+        most_common = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:10]
+        
+        return {
+            'original_text': original_text,
+            'processed_text': text,
+            'sentences': sentences,
+            'words': words,
+            'statistics': {
+                'char_count': char_count,
+                'word_count': word_count,
+                'sentence_count': sentence_count,
+                'unique_words': unique_words,
+                'avg_word_length': sum(len(w) for w in words) / word_count if word_count > 0 else 0,
+                'avg_sentence_length': word_count / sentence_count if sentence_count > 0 else 0
+            },
+            'word_frequency': word_freq,
+            'most_common_words': most_common
+        }
+    
+    def get_word_frequency(self, text):
+        """الحصول على تكرار الكلمات"""
+        words = self.tokenizer.tokenize_words(text)
+        word_freq = {}
+        for word in words:
+            word_freq[word] = word_freq.get(word, 0) + 1
+        return word_freq
+    
+    def get_statistics(self, text):
+        """الحصول على إحصائيات النص"""
+        sentences = self.tokenizer.tokenize_sentences(text)
+        words = self.tokenizer.tokenize_words(text)
+        
+        return {
+            'char_count': len(text),
+            'word_count': len(words),
+            'sentence_count': len(sentences),
+            'unique_words': len(set(words)),
+            'avg_word_length': sum(len(w) for w in words) / len(words) if words else 0,
+            'avg_sentence_length': len(words) / len(sentences) if sentences else 0
+        }
+
+# ═══════════════════════════════════════════════════════════════
+# arabic_nlp_toolkit/data/stopwords.txt
+# ═══════════════════════════════════════════════════════════════
+
+"""
 في
 من
 إلى
+على
+عن
+هذا
+هذه
+ذلك
+التي
+الذي
+التى
+هو
+هي
+أن
+إن
+كان
+كانت
+لم
+لن
+قد
+كل
+بعض
+أي
+أو
+لكن
+مع
+عند
+منذ
 حتى
-...
+و
+ف
+ب
+ك
+ل
+ما
+لا
+إلا
+غير
+بل
+أم
+أما
+هل
+نعم
+لماذا
+كيف
+أين
+متى
+الى
+ذاك
+تلك
+هؤلاء
+أولئك
+أنا
+نحن
+أنت
+أنتم
+أنتن
+هما
+هم
+هن
+"""
 
-===== file: tests/test_normalizer.py =====
-(الكود كما هو مرتب ومصحح)
+# ═══════════════════════════════════════════════════════════════
+# tests/test_normalizer.py
+# ═══════════════════════════════════════════════════════════════
 
-===== file: tests/test_tokenizer.py =====
-(الكود كما هو مرتب ومصحح)logo.svg<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- خلفية دائرية متدرجة -->
-  <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-    </linearGradient>
+import unittest
+import sys
+import os
+
+# إضافة المسار للمكتبة
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from arabic_nlp_toolkit import ArabicNormalizer
+
+class TestArabicNormalizer(unittest.TestCase):
     
-    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#ffd89b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#19547b;stop-opacity:1" />
-    </linearGradient>
+    def setUp(self):
+        self.normalizer = ArabicNormalizer()
     
-    <!-- تأثير الظل -->
-    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-      <feOffset dx="0" dy="2" result="offsetblur"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.3"/>
-      </feComponentTransfer>
-      <feMerge> 
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/> 
-      </feMerge>
-    </filter>
-  </defs>
-  
-  <!-- الخلفية الرئيسية -->
-  <circle cx="100" cy="100" r="95" fill="url(#bgGradient)" filter="url(#shadow)"/>
-  
-  <!-- دائرة داخلية -->
-  <circle cx="100" cy="100" r="85" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
-  
-  <!-- حرف ع العربي المنمق -->
-  <g transform="translate(100, 100)">
-    <!-- الجزء الرئيسي من حرف ع -->
-    <path d="M -25 -30 Q -35 -25, -35 -15 L -35 10 Q -35 20, -25 25 L 25 25 Q 35 20, 35 10 L 35 -5 Q 35 -15, 25 -20 L 5 -20 L 5 -10 L 20 -10 Q 25 -8, 25 -3 L 25 8 Q 25 13, 20 15 L -20 15 Q -25 13, -25 8 L -25 -12 Q -25 -18, -20 -20 L -10 -20" 
-          fill="#ffffff" 
-          stroke="#ffd89b" 
-          stroke-width="2"
-          filter="url(#shadow)"/>
+    def test_remove_diacritics(self):
+        text = "مَرْحَباً بِكُمْ"
+        expected = "مرحبا بكم"
+        result = self.normalizer.remove_diacritics(text)
+        self.assertEqual(result, expected)
     
-    <!-- النقطة -->
-    <circle cx="0" cy="5" r="4" fill="#ffd89b"/>
-  </g>
-  
-  <!-- عناصر تقنية (شبكة عصبية مبسطة) -->
-  <g opacity="0.4">
-    <!-- عقد -->
-    <circle cx="40" cy="50" r="3" fill="#ffffff"/>
-    <circle cx="160" cy="50" r="3" fill="#ffffff"/>
-    <circle cx="40" cy="150" r="3" fill="#ffffff"/>
-    <circle cx="160" cy="150" r="3" fill="#ffffff"/>
+    def test_normalize_alef(self):
+        text = "أحمد إبراهيم آمن"
+        expected = "احمد ابراهيم امن"
+        result = self.normalizer.normalize_alef(text)
+        self.assertEqual(result, expected)
     
-    <!-- خطوط الاتصال -->
-    <line x1="40" y1="50" x2="100" y2="70" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
-    <line x1="160" y1="50" x2="100" y2="70" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
-    <line x1="40" y1="150" x2="100" y2="130" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
-    <line x1="160" y1="150" x2="100" y2="130" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
-  </g>
-  
-  <!-- النص السفلي -->
-  <text x="100" y="175" 
-        font-family="Arial, sans-serif" 
-        font-size="16" 
-        font-weight="bold" 
-        fill="#ffffff" 
-        text-anchor="middle">NLP</text>
-  
-  <!-- حدود دائرية خارجية -->
-  <circle cx="100" cy="100" r="95" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
-</svg>
+    def test_normalize_teh_marbuta(self):
+        text = "مدرسة جميلة"
+        expected = "مدرسه جميله"
+        result = self.normalizer.normalize_teh_marbuta(text)
+        self.assertEqual(result, expected)
+    
+    def test_remove_tatweel(self):
+        text = "الســـــلام عليكـــــم"
+        expected = "السلام عليكم"
+        result = self.normalizer.remove_tatweel(text)
+        self.assertEqual(result, expected)
+    
+    def test_full_normalization(self):
+        text = "مَرْحَباً بِكُمْ فِي المَكْتَبَةِ"
+        result = self.normalizer.normalize(text)
+        self.assertIsInstance(result, str)
+        self.assertNotIn('َ', result)
 
-===== file: tests/test_stemmer.py =====
-(الكود كما هو مرتب ومصحح)
+if __name__ == '__main__':
+    unittest.main()
 
-===== file: examples/example.py =====
-(الكود كما هو مرتب ومصحح)
+# ═══════════════════════════════════════════════════════════════
+# tests/test_tokenizer.py
+# ═══════════════════════════════════════════════════════════════
 
-===== file: CONTRIBUTING.md =====
-(النص كما هو مرتب ومصحح)
-quick_test.pydef main():
-    text = "هذه مكتبة لمعالجة اللغة العربية. الاختبار اكتمل بنجاح. المكتبة تعمل بشكل ممتاز!"
+import unittest
+import sys
+import os
 
-    try:
-        import nltk
-        # تحميل الموارد اللازمة لأول مرة فقط
-        nltk.download('punkt', quiet=True)
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-        # استخدام NLTK إذا كانت متوفرة
-        words = nltk.word_tokenize(text)
-        sentences = nltk.sent_tokenize(text)
+from arabic_nlp_toolkit import ArabicTokenizer
 
-    except ImportError:
-        # إذا لم تكن المكتبة موجودة، نستخدم الطريقة البسيطة
-        words = text.split()
-        sentences = [s for s in text.split(".") if s.strip() != ""]
+class TestArabicTokenizer(unittest.TestCase):
+    
+    def setUp(self):
+        self.tokenizer = ArabicTokenizer()
+    
+    def test_tokenize_sentences(self):
+        text = "هذه جملة أولى. هذه جملة ثانية. هذه جملة ثالثة."
+        sentences = self.tokenizer.tokenize_sentences(text)
+        self.assertEqual(len(sentences), 3)
+    
+    def test_tokenize_words(self):
+        text = "مرحبا بكم في المكتبة"
+        words = self.tokenizer.tokenize_words(text)
+        self.assertEqual(len(words), 4)
+    
+    def test_tokenize_empty_text(self):
+        text = ""
+        words = self.tokenizer.tokenize_words(text)
+        self.assertEqual(len(words), 0)
 
-    analysis = {
-        'word_count': len(words),
-        'sentence_count': len(sentences)
-    }
+if __name__ == '__main__':
+    unittest.main()
 
-    print(f"{analysis['word_count']}")
-    print(f"{analysis['sentence_count']}")
-    print("الاختبار اكتمل بنجاح ✅")
-    print("المكتبة تعمل بشكل ممتاز! 🎉\n")
+# ═══════════════════════════════════════════════════════════════
+# tests/test_stemmer.py
+# ═══════════════════════════════════════════════════════════════
 
-if __name__ == "__main__":
-    main()
+import unittest
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from arabic_nlp_toolkit import ArabicStemmer
+
+class TestArabicStemmer(unittest.TestCase):
+    
+    def setUp(self):
+        self.stemmer = ArabicStemmer()
+    
+    def test_remove_prefixes(self):
+        word = "والمدرسة"
+        result = self.stemmer.remove_prefixes(word)
+        self.assertNotIn('وال', result)
+    
+    def test_remove_suffixes(self):
+        word = "المعلمون"
+        result = self.stemmer.remove_suffixes(word)
+        self.assertNotIn('ون', result)
+    
+    def test_stem_word(self):
+        word = "والمعلمون"
+        result = self.stemmer.stem(word)
+        self.assertIsInstance(result, str)
+        self.assertLess(len(result), len(word))
+    
+    def test_stem_short_word(self):
+        word = "من"
+        result = self.stemmer.stem(word)
+        self.assertEqual(result, word)
+
+if __name__ == '__main__':
+    unittest.main()
+
+# ═══════════════════════════════════════════════════════════════
+# examples/example.py
+# ═══════════════════════════════════════════════════════════════
+
+"""
+مثال على استخدام Arabic NLP Toolkit
+"""
+
+from arabic_nlp_toolkit import (
+    ArabicNormalizer,
+    ArabicTokenizer,
+    ArabicStemmer,
+    StopwordsRemover,
+    ArabicTextAnalyzer
+)
+
+def main():
+    print("=" * 60)
+    print("مثال على استخدام Arabic NLP Toolkit")
+    print("=" * 60)
+    print()
+    
+    # النص التجريبي
+    text = """
+    مَرْحَباً بِكُمْ في مكتبة معالجة اللغة العربية. 
+    هذه المكتبة توفر أدوات متقدمة لمعالجة النصوص العربية.
+    يمكنك استخدامها في مشاريعك بسهولة.
+    """
+    
+    print("النص الأصلي:")
+    print(text)
+    print("\n" + "=" * 60 + "\n")
+    
+    # 1. التطبيع
+    print("1. التطبيع (Normalization)")
+    print("-" * 60)
+    normalizer = ArabicNormalizer()
+    normalized_text = normalizer.normalize(text)
+    print("النص بعد التطبيع:")
+    print(normalized_text)
+    print()
+    
+    # 2. التقطيع
+    print("2. التقطيع (Tokenization)")
+    print("-" * 60)
+    tokenizer = ArabicTokenizer()
+    
+    sentences = tokenizer.tokenize_sentences(normalized_text)
+    print(f"عدد الجمل: {len(sentences)}")
+    for i, sentence in enumerate(sentences, 1):
+        print(f"  الجملة {i}: {sentence}")
+    print()
+    
+    words = tokenizer.tokenize_words(normalized_text)
+    print(f"عدد الكلمات: {len(words)}")
+    print(f"الكلمات: {', '.join(words[:10])}...")
+    print()
+    
+    # 3. إزالة الكلمات الشائعة
+    print("3. إزالة الكلمات الشائعة (Stop Words Removal)")
+    print("-" * 60)
+    stopwords_remover = StopwordsRemover()
+    filtered_words = stopwords_remover.remove(words)
+    print(f"عدد الكلمات بعد إزالة الكلمات الشائعة: {len(filtered_words)}")
+    print(f"الكلمات: {', '.join(filtered_words)}")
+    print()
+    
+    # 4. استخراج الجذور
+    print("4. استخراج الجذور (Stemming)")
+    print("-" * 60)
+    stemmer = ArabicStemmer()
+    print("أمثلة على الجذور:")
+    test_words = ['المد
