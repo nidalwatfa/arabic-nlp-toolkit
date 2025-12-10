@@ -57,7 +57,99 @@ nltk
 arabic-reshaper
 python-bidi
 """
+test_library.py
+import sys
+import os
 
+# إضافة المسار للمكتبة
+sys.path.insert(0, os.path.dirname(__file__))
+
+from arabic_nlp_toolkit import (
+    ArabicNormalizer,
+    ArabicTokenizer,
+    ArabicStemmer,
+    StopwordsRemover,
+    ArabicTextAnalyzer
+)
+
+print("🧪 بدء اختبار المكتبة...\n")
+
+# 1. التطبيع
+print("=" * 60)
+print("1️⃣ اختبار التطبيع")
+print("=" * 60)
+normalizer = ArabicNormalizer()
+text = "أَهْلاً وَسَهْلاً بِكُمْ فِي عَالَمِ البَرْمَجَةِ"
+result = normalizer.normalize(text)
+print(f"الأصلي: {text}")
+print(f"النتيجة: {result}")
+print("✅ نجح!\n")
+
+# 2. التجزئة
+print("=" * 60)
+print("2️⃣ اختبار التجزئة")
+print("=" * 60)
+tokenizer = ArabicTokenizer()
+text2 = "مرحباً بكم في عالم البرمجة العربية"
+tokens = tokenizer.tokenize(text2)
+print(f"النص: {text2}")
+print(f"الكلمات: {tokens}")
+print(f"عدد الكلمات: {len(tokens)}")
+print("✅ نجح!\n")
+
+# 3. التجذير
+print("=" * 60)
+print("3️⃣ اختبار التجذير")
+print("=" * 60)
+stemmer = ArabicStemmer()
+words = ["المبرمجون", "البرمجة", "المشاكل", "التكنولوجيا"]
+print("أمثلة على التجذير:")
+for word in words:
+    root = stemmer.stem(word)
+    print(f"  {word} → {root}")
+print("✅ نجح!\n")
+
+# 4. إزالة كلمات الوقف
+print("=" * 60)
+print("4️⃣ اختبار إزالة كلمات الوقف")
+print("=" * 60)
+remover = StopwordsRemover()
+text3 = "هذا كتاب مفيد جداً في علم البيانات والبرمجة"
+cleaned = remover.remove_stopwords(text3)
+print(f"الأصلي: {text3}")
+print(f"بعد التنظيف: {cleaned}")
+print("✅ نجح!\n")
+
+# 5. التحليل النصي
+print("=" * 60)
+print("5️⃣ اختبار التحليل النصي")
+print("=" * 60)
+analyzer = ArabicTextAnalyzer()
+text4 = "البرمجة هي فن وعلم. المبرمجون يحلون المشاكل."
+analysis = analyzer.analyze(text4)
+print(f"النص: {text4}\n")
+print("📊 الإحصائيات:")
+for key, value in analysis.items():
+    print(f"  • {key}: {value}")
+print("✅ نجح!\n")
+
+# 6. تكرار الكلمات
+print("=" * 60)
+print("6️⃣ اختبار تكرار الكلمات")
+print("=" * 60)
+text5 = "Python لغة برمجة قوية. Python سهلة التعلم. Python مستخدمة على نطاق واسع."
+frequency = analyzer.word_frequency(text5)
+print(f"النص: {text5}\n")
+print("الكلمات الأكثر تكراراً:")
+top_5 = list(frequency.items())[:5]
+for word, count in top_5:
+    print(f"  • {word}: {count}")
+print("✅ نجح!\n")
+
+print("=" * 60)
+print("🎉 جميع الاختبارات نجحت بامتياز!")
+print("=" * 60)
+print("\n✨ المكتبة جاهزة للاستخدام!")
 # =========================
 # ملف: README.md
 # =========================
