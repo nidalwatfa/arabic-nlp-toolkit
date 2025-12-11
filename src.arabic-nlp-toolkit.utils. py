@@ -1,24 +1,13 @@
-"""
-Utils Module
-------------
-دوال مساعدة إضافية لمعالجة النصوص العربية:
-- تنظيف النصوص من الرموز والأرقام
-- إزالة المسافات الزائدة
-- تحويل النصوص إلى حروف صغيرة
-"""
+# في arabic_nlp_toolkit/__init__.py
+from arabic_nlp_toolkit.utils import clean_text, remove_extra_spaces, to_lower
 
-import re
-
-def clean_text(text: str) -> str:
-    """إزالة الرموز والأرقام من النص العربي."""
-    text = re.sub(r"[0-9]", "", text)            # إزالة الأرقام
-    text = re.sub(r"[^\w\s]", "", text)          # إزالة الرموز
-    return text.strip()
-
-def remove_extra_spaces(text: str) -> str:
-    """إزالة المسافات الزائدة من النص."""
-    return re.sub(r"\s+", " ", text).strip()
-
-def to_lower(text: str) -> str:
-    """تحويل النصوص إلى حروف صغيرة (مفيد عند دمج نصوص عربية/إنجليزية)."""
-    return text.lower()
+__all__ = [
+    "normalize_text",
+    "remove_stopwords",
+    "tokenize",
+    "stem_word",
+    "word_frequency",
+    "clean_text",           # جديد
+    "remove_extra_spaces",  # جديد
+    "to_lower",            # جديد
+]
